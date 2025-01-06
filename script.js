@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const sendButton = document.getElementById("send-button");
 
     // URL da API do chatbot
-    const chatbotAPI = "https://sua-api-url.com/endpoint";
+    const chatbotAPI = " Running on http://192.168.1.75:5000";
 
     // Função para enviar a mensagem do usuário
     async function sendMessage() {
