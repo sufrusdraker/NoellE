@@ -1,3 +1,4 @@
 flask
 flask-cors
 gpt4all
+sqlite3
