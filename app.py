@@ -8,8 +8,9 @@ app = Flask(__name__)
 CORS(app)  # Permitir conexões externas
 
 # Configuração de caminho do modelo
-model_path = os.getenv("MODEL_PATH", "Meta-Llama-3-8B-Instruct.Q4_0.gguf")
-memory_directory = os.getenv("MEMORY_DIR", "memory_directory")
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_dir, "Meta-Llama-3-8B-Instruct.Q4_0.gguf")
+memory_directory = os.path.join(current_dir, "noelle_memoria")
 
 # Verificar se os recursos existem
 if not os.path.exists(model_path):
