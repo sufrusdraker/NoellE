@@ -31,7 +31,7 @@ async function sendMessage() {
         document.getElementById("user-input").value = "";
 
         // Lê a URL do ngrok do arquivo txt
-        let ngrokUrl = "https://5357-2001-8a0-f4da-f200-e8a7-a155-b823-69de.ngrok-free.app"; // URL padrão
+        let ngrokUrl = "http://localhost:575"; // URL padrão
         try {
             const response = await fetch('ngrok_url.txt');
             if (response.ok) {
