@@ -30,9 +30,21 @@ async function sendMessage() {
         // Limpa o campo de entrada
         document.getElementById("user-input").value = "";
 
-        // Faz a requisição para a API
+        // Lê a URL do ngrok do arquivo txt
+        let ngrokUrl = "http://localhost:575"; // URL padrão
         try {
-            const response = await fetch('http://localhost:575/chat', {
+            const response = await fetch('ngrok_url.txt');
+            if (response.ok) {
+                // Remove espaços extras e quebras de linha
+                ngrokUrl = (await response.text()).trim();
+            }
+        } catch (error) {
+            console.error('Erro ao ler a URL do ngrok:', error);
+        }
+
+        // Faz a requisição para a API usando a URL obtida
+        try {
+            const apiResponse = await fetch(`${ngrokUrl}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +52,7 @@ async function sendMessage() {
                 body: JSON.stringify({ message: userInput })
             });
 
-            const data = await response.json();
+            const data = await apiResponse.json();
 
             // Verifica se a resposta está correta
             if (data.response) {
@@ -63,7 +75,7 @@ async function sendMessage() {
     }
 }
 
-// Função para garantir que o botão Enviar funcione ao pressionar Enter também
+// Garante que o botão Enviar funcione ao pressionar Enter também
 document.getElementById("user-input").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         sendMessage();
@@ -113,3 +125,13 @@ function resetRoom() {
 // Adiciona os eventos para arrastar e soltar
 document.getElementById("room").addEventListener("dragover", allowDrop);
 document.getElementById("room").addEventListener("drop", drop);
+
+// Ajustes para garantir a interação com as abas de conteúdo
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        showContent(tab.dataset.contentId);
+    });
+});
+
+// Garante que o botão "Enviar" seja acionado ao clicar nele
+document.getElementById("send-button").addEventListener("click", sendMessage);
