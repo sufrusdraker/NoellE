@@ -20,6 +20,7 @@ function showContent(contentId) {
 async function sendMessage() {
     const userInput = document.getElementById("user-input").value;
     const chatHistory = document.getElementById("chat-history");
+    const apiUrl = "https://5357-2001-8a0-f4da-f200-e8a7-a155-b823-69de.ngrok-free.app";
 
     if (userInput.trim() !== "") {
         // Adiciona a mensagem do usuário ao histórico
@@ -29,9 +30,6 @@ async function sendMessage() {
 
         // Limpa o campo de entrada
         document.getElementById("user-input").value = "";
-
-        // Define a URL fixa da API
-        const apiUrl = "http://localhost:575";
 
         // Faz a requisição para a API usando a URL fixa
         try {
