@@ -30,21 +30,12 @@ async function sendMessage() {
         // Limpa o campo de entrada
         document.getElementById("user-input").value = "";
 
-        // Lê a URL do ngrok do arquivo txt
-        let ngrokUrl = "http://localhost:575"; // URL padrão
-        try {
-            const response = await fetch('ngrok_url.txt');
-            if (response.ok) {
-                // Remove espaços extras e quebras de linha
-                ngrokUrl = (await response.text()).trim();
-            }
-        } catch (error) {
-            console.error('Erro ao ler a URL do ngrok:', error);
-        }
+        // Define a URL fixa da API
+        const apiUrl = "http://localhost:575";
 
-        // Faz a requisição para a API usando a URL obtida
+        // Faz a requisição para a API usando a URL fixa
         try {
-            const apiResponse = await fetch(`${ngrokUrl}/chat`, {
+            const apiResponse = await fetch(`${apiUrl}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
