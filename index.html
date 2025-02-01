@@ -1,22 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot NoellE</title>
-    <link rel="stylesheet" href="style.css">
+    <title>NoellE</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="chat-container">
-        <h1>NoellE Chat</h1>
-        <div id="chat-history" class="chat-history">
-            <!-- Mensagens aparecerão aqui -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Digite sua mensagem...">
-            <button id="send-button">Enviar</button>
+
+<!-- Barra lateral -->
+<div id="sidebar" class="hidden">
+    <button onclick="showContent('home')">Página Principal</button>
+    <button onclick="showContent('chatbot')">Chatbot</button>
+    <button onclick="showContent('diario')">Diário Compartilhado</button>
+    <button onclick="showContent('jogos')">Jogos</button>
+    <button onclick="showContent('estudo')">Área de Estudo</button>
+    <button onclick="showContent('quarto')">Quarto da NoellE</button>
+    <button onclick="showContent('config')">Configurações</button>
+</div>
+
+<!-- Conteúdo principal -->
+<div id="main" class="collapsed">
+
+    <!-- Página Principal -->
+    <div id="home-content" class="content active">
+        <h1>Oi, sou a NoellE!</h1>
+        <p>Bem-vindo ao meu espaço! Se você está aqui, significa que algo interessante está prestes a acontecer. Explore, se divirta e, quem sabe, até aprenda algo novo comigo. Vamos ver no que dá?</p>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot-content" class="content">
+        <h2>Chatbot</h2>
+        <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+            <div id="chat-history" style="flex: 1; overflow-y: auto; padding: 10px; border: 1px solid #333; background-color: #222; margin-bottom: 10px; border-radius: 5px;">
+                <p><strong>NoellE:</strong> Oi! Como posso te ajudar hoje?</p>
+            </div>
+            <div id="chat-input" style="display: flex; gap: 10px;">
+                <input id="user-input" type="text" placeholder="Digite sua mensagem..." autocomplete="off" 
+                    style="flex: 1; padding: 10px; font-size: 16px; border: none; border-radius: 5px; background-color: #333; color: white; outline: none;">
+                <button id="send-btn" onclick="sendMessage()" 
+                    style="padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background-color: #444; color: white; cursor: pointer;">
+                    Enviar
+                </button>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Quarto da NoellE -->
+    <div id="quarto-content" class="content">
+        <h2>Quarto da NoellE</h2>
+        <p>Bem-vindo ao quarto da NoellE. Personalize o espaço dela aqui!</p>
+
+        <div class="room" id="room">
+            <div class="furniture bed" id="bed" draggable="true" ondragstart="drag(event)">
+                Cama
+            </div>
+            <div class="furniture desk" id="desk" draggable="true" ondragstart="drag(event)">
+                Escrivaninha
+            </div>
+            <div class="furniture shelf" id="shelf" draggable="true" ondragstart="drag(event)">
+                Prateleira
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="resetRoom()">Resetar Quarto</button>
+        </div>
+
+    </div>
+
+    <div id="diario-content" class="content">
+        <h2>Diário Compartilhado</h2>
+        <p>Escreva e compartilhe seus pensamentos com a NoellE.</p>
+    </div>
+
+    <div id="jogos-content" class="content">
+        <h2>Jogos</h2>
+        <p>Divirta-se jogando com a NoellE!</p>
+    </div>
+
+    <div id="estudo-content" class="content">
+        <h2>Área de Estudo</h2>
+        <p>Aprenda e explore novos conhecimentos com a NoellE.</p>
+    </div>
+
+    <!-- Configurações -->
+    <div id="config-content" class="content">
+        <h2>Configurações</h2>
+        <p>Altere as configurações do site ou personalize sua experiência.</p>
+    </div>
+</div>
+
+<!-- Botão para alternar a barra lateral -->
+<button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+<script src="script.js"></script>
 </body>
 </html>
