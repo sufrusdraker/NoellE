@@ -23,7 +23,7 @@ let apiUrl = null;
 // Função para carregar a API apenas uma vez
 async function initializeAPI() {
     if (!apiUrl) {
-        apiUrl = "https://9e0f-2001-8a0-f4da-f200-8182-7f1a-fbc4-5471.ngrok-free.app";
+        apiUrl = "https://b406-2001-8a0-f4da-f200-61bb-9472-2fb3-9b15.ngrok-free.app";
     }
 }
 
