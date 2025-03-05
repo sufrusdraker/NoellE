@@ -17,10 +17,23 @@ function showContent(contentId) {
 }
 
 // Função para enviar a mensagem para a API e obter a resposta
+// Variável global para armazenar a URL da API
+let apiUrl = null;
+
+// Função para carregar a API apenas uma vez
+async function initializeAPI() {
+    if (!apiUrl) {
+        apiUrl = "https://9e0f-2001-8a0-f4da-f200-8182-7f1a-fbc4-5471.ngrok-free.app";
+    }
+}
+
+// Chama a função ao carregar o site
+initializeAPI();
+
+// Função para enviar a mensagem para a API e obter a resposta
 async function sendMessage() {
     const userInput = document.getElementById("user-input").value;
     const chatHistory = document.getElementById("chat-history");
-    const apiUrl = "https://9e0f-2001-8a0-f4da-f200-8182-7f1a-fbc4-5471.ngrok-free.app";
 
     if (userInput.trim() !== "") {
         // Adiciona a mensagem do usuário ao histórico
@@ -31,7 +44,6 @@ async function sendMessage() {
         // Limpa o campo de entrada
         document.getElementById("user-input").value = "";
 
-        // Faz a requisição para a API usando a URL fixa
         try {
             const apiResponse = await fetch(`${apiUrl}/chat`, {
                 method: 'POST',
@@ -43,9 +55,7 @@ async function sendMessage() {
 
             const data = await apiResponse.json();
 
-            // Verifica se a resposta está correta
             if (data.response) {
-                // Adiciona a resposta da NoellE ao histórico
                 const botMessage = document.createElement("p");
                 botMessage.innerHTML = `<strong>NoellE:</strong> ${data.response}`;
                 chatHistory.appendChild(botMessage);
@@ -59,7 +69,6 @@ async function sendMessage() {
             chatHistory.appendChild(botMessage);
         }
 
-        // Rola para o fundo do histórico de chat
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 }
