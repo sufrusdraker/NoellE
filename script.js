@@ -20,7 +20,7 @@ function showContent(contentId) {
 async function sendMessage() {
     const userInput = document.getElementById("user-input").value;
     const chatHistory = document.getElementById("chat-history");
-    const apiUrl = "https://261e-2001-8a0-f4da-f200-d6a-7f80-95df-c6d1.ngrok-free.app";
+    const apiUrl = "https://ac0e-2001-8a0-f4da-f200-d6a-7f80-95df-c6d1.ngrok-free.app";
 
     if (userInput.trim() !== "") {
         // Adiciona a mensagem do usuário ao histórico
