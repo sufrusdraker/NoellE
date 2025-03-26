@@ -1,165 +1,246 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #121212;
-    color: white;
+:root {
+  --bg-dark: #121212;
+  --sidebar-bg: rgba(34, 34, 34, 0.85);
+  --content-bg: #181818;
+  --button-primary: #f06292;
+  --button-hover: #ec407a;
+  --text-light: #ffffff;
+  --border-accent: #444;
+  --transition-speed: 0.3s;
 }
 
-/* Estilo da barra lateral */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+}
+
+/* Barra lateral moderna com efeito vidro */
 #sidebar {
-    width: 250px;
-    background-color: #222;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    transition: transform 0.3s ease;
-    z-index: 1000;
+  width: 250px;
+  background-color: var(--sidebar-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  transition: transform var(--transition-speed) ease;
+  z-index: 1000;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #sidebar.hidden {
-    transform: translateX(-100%);
+  transform: translateX(-100%);
 }
 
 #sidebar button {
-    background-color: #333;
-    border: none;
-    color: white;
-    padding: 15px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 16px;
-    border-bottom: 1px solid #444;
+  background-color: rgba(51, 51, 51, 0.7);
+  border: none;
+  color: var(--text-light);
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  border-bottom: 1px solid var(--border-accent);
+  transition: all var(--transition-speed) ease;
 }
 
 #sidebar button:hover {
-    background-color: #444;
+  background-color: rgba(68, 68, 68, 0.9);
+  padding-left: 20px;
 }
 
-/* Estilo do conteúdo principal */
+/* Conteúdo principal com scroll personalizado */
 #main {
-    margin-left: 250px;
-    flex: 1;
-    transition: margin-left 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  margin-left: 250px;
+  flex: 1;
+  transition: margin-left var(--transition-speed) ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 #main.collapsed {
-    margin-left: 0;
+  margin-left: 0;
 }
 
-/* Cada aba de conteúdo */
+/* Abas de conteúdo com scroll estilizado */
 .content {
-    flex: 1;
-    display: none;
-    flex-direction: column;
-    height: 100%;
-    overflow: auto;
-    background-color: #181818;
-    padding: 20px;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--content-bg);
+  padding: 20px;
+  scroll-behavior: smooth;
 }
 
 .content.active {
-    display: flex;
+  display: flex;
 }
 
-/* Página Principal com Imagem de Fundo */
+/* Scrollbar personalizada */
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: var(--content-bg);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--button-primary);
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--button-hover);
+}
+
+/* Página principal com overlay escuro */
 #home-content {
-    background-image: url('https://via.placeholder.com/1920x1080');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.6), 
+    url('https://via.placeholder.com/1920x1080') center/cover no-repeat;
+  color: var(--text-light);
 }
 
 #home-content h1,
 #home-content p {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Botão de alternar barra lateral */
+/* Botão de toggle modernizado */
 #toggle-btn {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1000;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(51, 51, 51, 0.7);
+  backdrop-filter: blur(5px);
+  color: var(--text-light);
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Estilo do Quarto da NoellE */
+#toggle-btn:hover {
+  background-color: rgba(68, 68, 68, 0.9);
+  transform: scale(1.05);
+}
+
+/* Quarto da NoellE com animação */
 .room {
-    width: 400px;
-    height: 300px;
-    background-color: #fff1f9;
-    border: 5px solid #f8bbd0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    position: relative;
+  width: 400px;
+  height: 300px;
+  background-color: #fff1f9;
+  border: 5px solid #f8bbd0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.room:hover {
+  transform: translateY(-5px);
 }
 
 .furniture {
-    position: absolute;
-    border-radius: 5px;
-    background-color: #f48fb1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
+  position: absolute;
+  border-radius: 5px;
+  background-color: #f48fb1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.furniture:hover {
+  filter: brightness(1.1);
+  transform: scale(1.05);
 }
 
 .bed {
-    width: 120px;
-    height: 60px;
-    bottom: 10px;
-    left: 10px;
-    background-color: #d1c4e9;
+  width: 120px;
+  height: 60px;
+  bottom: 10px;
+  left: 10px;
+  background-color: #d1c4e9;
 }
 
 .desk {
-    width: 80px;
-    height: 50px;
-    bottom: 10px;
-    right: 10px;
-    background-color: #c5e1a5;
+  width: 80px;
+  height: 50px;
+  bottom: 10px;
+  right: 10px;
+  background-color: #c5e1a5;
 }
 
 .shelf {
-    width: 200px;
-    height: 20px;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ffcc80;
+  width: 200px;
+  height: 20px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffcc80;
 }
 
+/* Botões com efeito neon sutil */
 .controls {
-    margin-top: 10px;
-    text-align: center;
+  margin-top: 10px;
+  text-align: center;
 }
 
 button {
-    padding: 8px 15px;
-    margin: 5px;
-    background-color: #f06292;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    font-size: 14px;
+  padding: 8px 15px;
+  margin: 5px;
+  background-color: var(--button-primary);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover {
-    background-color: #ec407a;
+  background-color: var(--button-hover);
+  box-shadow: 0 0 10px rgba(240, 98, 146, 0.5);
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0)
+  );
+  transform: rotate(30deg);
+  transition: all 0.5s ease;
+}
+
+button:hover::after {
+  left: 100%;
 }
