@@ -20,7 +20,7 @@ function showContent(contentId) {
 async function sendMessage() {
     const userInput = document.getElementById("user-input").value;
     const chatHistory = document.getElementById("chat-history");
-    const apiUrl = "https://0800-2001-8a0-f4da-f200-8878-c0fd-62dc-69f9.ngrok-free.app";
+    const apiUrl = "https://legal-fish-simply.ngrok-free.app";
 
     if (userInput.trim() !== "") {
         // Adiciona a mensagem do usuário ao histórico
