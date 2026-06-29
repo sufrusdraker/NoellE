@@ -10,41 +10,47 @@ from PIL import Image
 from diffusers import AutoPipelineForText2Image
 import torch
 
-# Configuração do modelo de texto
-model_path = "C:/Users/joaot/AppData/Local/nomic.ai/GPT4All/Meta-Llama-3-8B-Instruct.Q4_0.gguf"
+# === CONFIGURAÇÃO DE CAMINHOS DINÂMICOS (Padrão de Mercado) ===
+# Descobre onde este script está rodando para criar as pastas no lugar certo
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+OUTPUT_FOLDER = os.path.join(BASE_DIR, "generated_images")
+PERSONA_PATH = os.path.join(BASE_DIR, "persona.txt")
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+
+# Busca o modelo na pasta de cache padrão do usuário do sistema operacional
+USER_HOME = os.path.expanduser("~")
+MODEL_PATH = os.path.join(USER_HOME, "AppData", "Local", "nomic.ai", "GPT4All", "Meta-Llama-3-8B-Instruct.Q4_0.gguf")
 
 app = Flask(__name__)
 CORS(app)  
-
-UPLOAD_FOLDER = "uploads"
-OUTPUT_FOLDER = "generated_images"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["OUTPUT_FOLDER"] = OUTPUT_FOLDER
 
 # Verifica se o modelo existe
-if not os.path.exists(model_path):
-    raise FileNotFoundError(f"Erro: Modelo não encontrado em {model_path}.")
+if not os.path.exists(MODEL_PATH):
+    raise FileNotFoundError(f"Erro: Modelo não encontrado em {MODEL_PATH}. Verifique o caminho padrão do GPT4All.")
 
 print("Carregando modelo GPT4All...")
-gpt4all = GPT4All(model_path)
+gpt4all = GPT4All(MODEL_PATH)
 
-# Carregar modelo de geração de imagens
-print("Carregando modelo de geração de imagens...")
+print("Carregando modelo de geração de imagens (SDXL-Turbo)...")
 pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo") 
-pipe.to("cpu")  # Mantendo na CPU para compatibilidade
+pipe.to("cpu")  
 
-# Personalidade da NoellE
-personality = (  
-    "Você é NoellE, uma pessoa que combina inteligência afiada com um senso de orgulho e atitude forte..."
-)
+# Carrega a personalidade direto do arquivo de persona que limpamos hoje
+if os.path.exists(PERSONA_PATH):
+    with open(PERSONA_PATH, "r", encoding="utf-8") as f:
+        personality = f.read()
+else:
+    personality = "Você é NoellE, uma inteligência artificial sutilmente tsundere..."
 
-# Fila de mensagens
+# Controle de Fila e Threads
 message_queue = Queue()
-
-# Estruturas para respostas e eventos
 responses = {}
 events = {}
 dict_lock = threading.Lock()
@@ -62,8 +68,11 @@ def process_queue():
     while True:
         user_input, request_id = message_queue.get()
         prompt = f"{personality}\nHumano: {user_input}\nNoellE responde:"
-
         get_response(prompt, request_id)
+
+@app.route("/")
+def home():
+    return "API da NoellE rodando com arquitetura assíncrona robusta!"
 
 @app.route("/chat", methods=["POST", "OPTIONS"])
 def chat():
@@ -81,7 +90,6 @@ def chat():
         events[request_id] = threading.Event()
 
     message_queue.put((user_input, request_id))
-
     events[request_id].wait()
 
     with dict_lock:
@@ -103,9 +111,8 @@ def image_chat():
     image.save(file_path)
 
     try:
-        img = Image.open(file_path)
-        width, height = img.size
-        img.close()
+        with Image.open(file_path) as img:
+            width, height = img.size
         img_info = f"Imagem recebida com resolução {width}x{height}."
     except Exception as e:
         img_info = f"Erro ao processar a imagem: {str(e)}"
@@ -117,7 +124,6 @@ def image_chat():
         events[request_id] = threading.Event()
 
     message_queue.put((prompt, request_id))
-
     events[request_id].wait()
 
     with dict_lock:
@@ -151,7 +157,8 @@ def get_image(filename):
 if __name__ == "__main__":
     threading.Thread(target=process_queue, daemon=True).start()
     
-    public_url = "https://legal-fish-simply.ngrok-free.app"
-    print("Ngrok tunnel URL:", public_url)
+    # Opcional: Ative o ngrok dinamicamente se for rodar externamente
+    # public_url = ngrok.connect(575).public_url
+    # print("Ngrok tunnel URL:", public_url)
 
     app.run(host="0.0.0.0", port=575)
